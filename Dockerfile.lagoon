@@ -1,8 +1,12 @@
+FROM uselagoon/commons as commons
 FROM wallies/python-cuda:3.10-cuda11.7-runtime
 
-RUN groupadd -g 10009 -o privategpt && useradd -m -u 10009 -g 10009 -o -s /bin/bash privategpt
-USER privategpt
-WORKDIR /home/privategpt
+COPY --from=commons /lagoon /lagoon
+COPY --from=commons /bin/fix-permissions /bin/ep /bin/docker-sleep /bin/wait-for /bin/
+COPY --from=commons /sbin/tini /sbin/
+COPY --from=commons /home /home
+
+WORKDIR /privategpt
 
 COPY ./src/requirements.txt src/requirements.txt
 RUN pip install --upgrade pip \
@@ -11,5 +15,7 @@ RUN pip install --upgrade pip \
     && pip cache purge
 
 COPY ./src src
+
+RUN fix-permissions /privategpt
 
 CMD [ "sleep", "infinity" ]
