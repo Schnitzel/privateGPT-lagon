@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-set -e
+set -x
 
 pip --version > /dev/null 2>&1
 if [ $? -eq 0 ]; then
@@ -54,22 +54,22 @@ else
     exit 1
 fi
 
-nvcc --version > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    nvcc --version | grep "release 11.8" > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        echo "CUDA 11.8 is installed."
-    else
-        echo "Error: CUDA 11.8 is not installed."
-        exit 1
-    fi
-else
-    echo "Error: nvcc is not found. Please install CUDA 11.8."
-    exit 1
-fi
+# nvcc --version > /dev/null 2>&1
+# if [ $? -eq 0 ]; then
+#     nvcc --version | grep "release 11.8" > /dev/null 2>&1
+#     if [ $? -eq 0 ]; then
+#         echo "CUDA 11.8 is installed."
+#     else
+#         echo "Error: CUDA 11.8 is not installed."
+#         exit 1
+#     fi
+# else
+#     echo "Error: nvcc is not found. Please install CUDA 11.8."
+#     exit 1
+# fi
 
 echo "Installing requirements..."
-$PIP_COMMAND install -r requirements.txt -q
+$PIP_COMMAND install -r requirements.txt
 
 $PYTHON_COMMAND -c "import torch; assert torch.version.cuda.startswith('11.8'), 'Error: CUDA version should be 11.8.'" > /dev/null 2>&1
 if [ $? -eq 0 ]; then
