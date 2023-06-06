@@ -1,0 +1,8 @@
+services:
+  privategpt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    labels:
+      lagoon.type: cli
+      lagoon.gpu: true
