@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.8.0-devel-ubuntu18.04
+FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
 
 
 
